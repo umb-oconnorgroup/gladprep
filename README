@@ -1,0 +1,26 @@
+The following is meant to automate the data preparation process to be able to search for controls through GladDB.
+
+Usage Instructions:
+
+Place all vcf.gz or vcf files within a single directory.
+The current version of this scripts only supports vcf.gz and vcf files that all use the same samples.
+
+Install Docker (https://docs.docker.com/get-docker/)
+On Linux, you may have to run the following with sudo if you haven't added your user to the docker group (https://docs.docker.com/engine/install/linux-postinstall/).
+
+Run the following commands, substituting in the path to your vcf-containing directory -
+docker build -t gladprep .
+docker run -d --mount type=bind,source=<path/to/dir/containing/vcf.gz>,target=/app/data gladprep
+
+Monitor the container with the following command -
+docker container ls
+
+Once it finishes running, it will no longer appear unless you add the -a flag.
+
+In order to retrieve the prepared data, grab the container id from the output of the following command -
+docker container ls -a
+
+Use the container id in the following command to copy the query file to a location you can access -
+docker cp <container-id>:/app/query.npz .
+
+You can now upload the query file to the gladdb website.
